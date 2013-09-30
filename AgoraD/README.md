@@ -1,0 +1,2 @@
+AgoraD: Loading Dock is a data sharing platform for performing data store agnostic transfers to other data stores. The
+loading dock is a lightweight django applet that sits on top of a datastore and performs these transfers.
