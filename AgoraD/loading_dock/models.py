@@ -21,7 +21,7 @@ class Table(models.Model):
 
 class Column(models.Model):
 # multi-column uniqueness
-  class Meta: 
+  class Meta:
     unique_together = ('table', 'name')
 
   table = models.ForeignKey(Table)
