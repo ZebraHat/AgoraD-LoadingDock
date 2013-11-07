@@ -14,7 +14,7 @@ class Table(models.Model):
     unique_together = ('db', 'name')
 
   db = models.ForeignKey(Database)
-  name = models.CharField(max_length=200)
+  name = models.CharField(max_length=200, unique=True)
 
   def __unicode__(self):
     return self.name
@@ -25,7 +25,7 @@ class Column(models.Model):
     unique_together = ('table', 'name')
 
   table = models.ForeignKey(Table)
-  name = models.CharField(max_length=200)
+  name = models.CharField(max_length=200, unique=True)
   type = models.CharField(max_length=200)
 
   def __unicode__(self):

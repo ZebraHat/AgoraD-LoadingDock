@@ -29,15 +29,18 @@ class Command(BaseCommand):
       if dbname not in connections:
         print 'Not a valid database'
         return
+
       cursor = connections[dbname].cursor()
       introspector = connections[dbname].introspection
+      type_reverser = introspector.data_types_reverse
+
       db = Database.objects.get(name=dbname)
 
       for tablename in options['tables']:
         try:
           table = _add_table(db, tablename)
           for fieldinfo in introspector.get_table_description(cursor, tablename):
-            _add_column(table, fieldinfo)
+            _add_column(table, fieldinfo, type_reverser)
         except IntegrityError:
           print tablename + ' is not a valid table name.'
 
@@ -45,6 +48,7 @@ class Command(BaseCommand):
       for dbname in args:
         cursor = connections[dbname].cursor()
         introspector = connections[dbname].introspection
+        type_reverser = introspector.data_types_reverse
 
         try:
           db = _add_db(dbname)
@@ -55,7 +59,7 @@ class Command(BaseCommand):
           table = _add_table(db, tablename)
 
           for fieldinfo in introspector.get_table_description(cursor, tablename):
-            _add_column(table, fieldinfo)
+            _add_column(table, fieldinfo, _type_reverser(type_reverser))
 
 
 def _add_db(dbname):
@@ -75,8 +79,16 @@ def _add_table(db, tablename):
 
   return table
 
-def _add_column(table, columninfo):
-  column = Column(table=table, name=columninfo[0], type=columninfo[1])
+def _add_column(table, columninfo, type_reverser):
+  column = Column(table=table, name=columninfo[0], type=type_reverser(columninfo[1]))
   column.save()
   return column
 
+def _type_reverser(type_reverser):
+  def reverse(t):
+    if type(type_reverser[t]) is tuple:
+      return type_reverser[t]
+    else:
+      return (type_reverser[t], {})
+
+  return reverse
