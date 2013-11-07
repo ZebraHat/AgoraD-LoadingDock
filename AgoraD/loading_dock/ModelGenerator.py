@@ -3,11 +3,6 @@ import sys
 from models import Database, Table, Column
 from django.db import models
 
-# TODO:
-#filters modules geography
-# set primary key attr
-# bug: __getattribute__ not called when doing from ModelGenerator.dbname import tablename
-
 # Cache for generated models
 # Used as such: modelCache[dbname][tablename] = model
 modelCache = {}
@@ -76,7 +71,6 @@ def getModel(dbname, tablename):
     d[c.name] = models.__dict__[t[0]](**t[1])
 
   d['__module__'] = __name__ + '.' + dbname
-  print d['__module__']
   d['__database__'] = dbname
 
   class Meta:
