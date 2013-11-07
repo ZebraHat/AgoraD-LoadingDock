@@ -4,6 +4,8 @@ from django.db import connections, IntegrityError
 from loading_dock.models import Database, Table, Column
 from optparse import make_option
 
+from django.utils import six
+
 class Command(BaseCommand):
   args = '<dbname ...>'
   option_list = BaseCommand.option_list + (
@@ -32,13 +34,13 @@ class Command(BaseCommand):
 
       cursor = connections[dbname].cursor()
       introspector = connections[dbname].introspection
-      type_reverser = introspector.data_types_reverse
 
       db = Database.objects.get(name=dbname)
 
       for tablename in options['tables']:
         try:
           table = _add_table(db, tablename)
+          type_reverser = _type_reverser(introspector, cursor, tablename)
           for fieldinfo in introspector.get_table_description(cursor, tablename):
             _add_column(table, fieldinfo, type_reverser)
         except IntegrityError:
@@ -57,9 +59,10 @@ class Command(BaseCommand):
 
         for tablename in introspector.get_table_list(cursor):
           table = _add_table(db, tablename)
+          type_reverser = _type_reverser(introspector, cursor, tablename)
 
           for fieldinfo in introspector.get_table_description(cursor, tablename):
-            _add_column(table, fieldinfo, _type_reverser(type_reverser))
+            _add_column(table, fieldinfo, type_reverser)
 
 
 def _add_db(dbname):
@@ -74,21 +77,31 @@ def _add_table(db, tablename):
     table.save()
   except IntegrityError:
     table = Table.objects.get(name=tablename, db=db)
-    for column in Columns.objects.filter(table=table, db=db):
+    for column in Column.objects.filter(table=table):
       column.delete()
 
   return table
 
 def _add_column(table, columninfo, type_reverser):
-  column = Column(table=table, name=columninfo[0], type=type_reverser(columninfo[1]))
+  column = Column(table=table, name=columninfo[0], type=type_reverser(columninfo))
   column.save()
   return column
 
-def _type_reverser(type_reverser):
+def _type_reverser(introspector, cursor, table):
+  # for some reason, get_primary_key_column does not work, 
+  # but this code which does the exact same thing does. 
+  primary_key = None
+  for column in six.iteritems(introspector.get_indexes(cursor, table)):
+    if column[1]['primary_key']:
+      primary_key = column[0]
+
   def reverse(t):
-    if type(type_reverser[t]) is tuple:
-      return type_reverser[t]
-    else:
-      return (type_reverser[t], {})
+    rt = introspector.get_field_type(t[1], t)
+    if type(rt) is not tuple:
+      rt = (rt, {})
+    if str(t[0]) == primary_key:
+      rt[1]['primary_key'] = True
+
+    return rt
 
   return reverse

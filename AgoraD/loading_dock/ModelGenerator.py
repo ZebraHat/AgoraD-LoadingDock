@@ -73,10 +73,6 @@ def getModel(dbname, tablename):
 
   for c in columns:
     t = eval(c.type)
-    # TODO: remove this bullshit
-    if c.name == 'c1':
-      t[1]['primary_key'] = True
-
     d[c.name] = models.__dict__[t[0]](**t[1])
 
   d['__module__'] = __name__ + '.' + dbname
