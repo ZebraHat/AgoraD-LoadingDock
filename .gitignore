@@ -1,1 +1,9 @@
 AgoraD/.idea
+*.pyc
+.*.sw?
+AgoraD/AgoraD/settings.pyc
+AgoraD/AgoraD/urls.pyc
+AgoraD/AgoraD/wsgi.pyc
+AgoraD/highway/__init__.pyc
+AgoraD/loading_dock/__init__.pyc
+AgoraD/loading_dock/models.pyc

@@ -1,0 +1,5 @@
+Add a field for column names to generated models 
+Investigate bug in get_primary_key_column?
+Document add_db
+Test ModelGenerator a whole lot more
+

@@ -17,5 +17,6 @@ urlpatterns = patterns('',
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^highway/', include('highway.urls')),
-    url(r'tables', '')
+    url(r'tables', ''),
+    url(r'^loading_dock/', include('loading_dock.urls')),
 )
