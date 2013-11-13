@@ -13,6 +13,10 @@ def dblist(request, *args, **kwargs):
   print ModelGenerator.data
 
   print t
+
+  v = t(c1 = 5, c2 = "asdf")
+  v.save()
+
   s = ''
   for i in t.objects.all():
     s += str((i.c1, i.c2))
