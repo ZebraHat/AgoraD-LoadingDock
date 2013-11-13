@@ -56,6 +56,7 @@ def transfer_block(request):
 
 @api_view(['POST'])
 def intercept_schema(request):
+    #TODO run syncdb to create the new database (need auto naming convention)
     #TODO input schema into loading dock
     #TODO re-request on failure to create
     pass
