@@ -6,9 +6,6 @@ from rest_framework.response import Response
 from rest_framework import status
 import urllib2
 
-import datetime
-import json
-
 
 @api_view(['POST'])
 def transfer_start(request):
@@ -38,3 +35,34 @@ def transfer_start(request):
     response = urllib2.urlopen(params['destination'], data)
 
     #TODO check response, if not 200, warn the marketplace
+    #TODO calculate blocks
+
+
+@api_view(['POST'])
+def transfer_schema(request):
+    #TODO lookup session
+    #TODO grab schema in json format
+    #TODO return to sender
+    pass
+
+
+@api_view(['POST'])
+def transfer_block(request):
+    #TODO look up session
+    #TODO grab block in json format (need someone to calculate blocks)
+    #TODO return to sender
+    pass
+
+
+@api_view(['POST'])
+def intercept_schema(request):
+    #TODO input schema into loading dock
+    #TODO re-request on failure to create
+    pass
+
+
+@api_view(['POST'])
+def intercept_block(request):
+    #TODO grab block and shove into database @Jarus
+    #TODO upon failure, check if need for re-request
+    pass

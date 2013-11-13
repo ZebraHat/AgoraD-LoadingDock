@@ -2,6 +2,8 @@ from django.db import models
 
 #TODO: less arbitrary name length
 
+#### LOGGER DB ####
+
 class Database(models.Model):
   name = models.CharField(max_length=200, unique=True)
 
@@ -19,6 +21,7 @@ class Table(models.Model):
   def __unicode__(self):
     return self.name
 
+
 class Column(models.Model):
 # multi-column uniqueness
   class Meta:
@@ -31,3 +34,4 @@ class Column(models.Model):
   def __unicode__(self):
     return self.name
 
+#### END LOGGER DB ####
