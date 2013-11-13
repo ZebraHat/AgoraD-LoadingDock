@@ -17,6 +17,12 @@ def dblist(request, *args, **kwargs):
   for i in t.objects.all():
     s += str((i.c1, i.c2))
 
+  s += "\n"
+
+  for i in t.__fields__:
+    s += str(i)
+    s += "\n"
+
   return HttpResponse(s)
 
 

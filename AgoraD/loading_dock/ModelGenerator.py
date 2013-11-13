@@ -66,9 +66,11 @@ def getModel(dbname, tablename):
   table = Table.objects.get(name = tablename, db=db)
   columns = Column.objects.filter(table = table)
 
+  d['__fields__'] = []
   for c in columns:
     t = eval(c.type)
     d[c.name] = models.__dict__[t[0]](**t[1])
+    d['__fields__'].append(c.name)
 
   d['__module__'] = __name__ + '.' + dbname
   d['__database__'] = dbname
