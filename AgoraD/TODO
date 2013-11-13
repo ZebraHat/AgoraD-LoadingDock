@@ -1,5 +1,13 @@
-Add a field for column names to generated models 
 Investigate bug in get_primary_key_column?
 Document add_db
 Test ModelGenerator a whole lot more
+Create new databases/tables for incoming schemas
+JSON schema db listing
+JSON serializers
+
+URLs/views:
+db/table listings
+
+Get schema in json
+accept new schema in json
 
