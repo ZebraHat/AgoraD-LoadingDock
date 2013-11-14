@@ -16,7 +16,11 @@ class ModuleGenerator(types.ModuleType):
     if key in globals():
       return globals()[key]
 
-    moduleName = __name__ + '.' + key
+    # fun with pretending we still have instance methods
+    if key == '__getattribute__':
+      return lambda k: ModuleGenerator.__getattribute__(self, k)
+
+    moduleName = __name__ + '.' + str(key)
 
     # prevent pointless module regeneration
     if moduleName in sys.modules:
@@ -72,8 +76,11 @@ def getModel(dbname, tablename):
     d[c.name] = models.__dict__[t[0]](**t[1])
     d['__fields__'].append(c.name)
 
-  d['__module__'] = __name__ + '.' + dbname
   d['__database__'] = dbname
+  
+  d['__module__'] = __name__ + '.' + dbname
+  # Cause the database module to be created if it has not already
+  sys.modules[__name__].__getattribute__(dbname)
 
   class Meta:
     db_table = tablename
