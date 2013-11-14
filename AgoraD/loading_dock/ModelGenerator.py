@@ -77,10 +77,10 @@ def getModel(dbname, tablename):
     d['__fields__'].append(c.name)
 
   d['__database__'] = dbname
-  
-  d['__module__'] = __name__ + '.' + dbname
+
   # Cause the database module to be created if it has not already
   sys.modules[__name__].__getattribute__(dbname)
+  d['__module__'] = __name__ + '.' + dbname
 
   class Meta:
     db_table = tablename
