@@ -6,7 +6,7 @@
 __author__ = 'chase'
 
 from django.db import models
-from AgoraD.loading_dock.models import Database, Table
+from loading_dock.models import Database, Table
 
 
 class Session(models.Model):
