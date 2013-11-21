@@ -28,20 +28,24 @@ def toJSON(dbname, tablenames, destdb = None):
 
     return json.dumps(schema, sort_keys=True)
 
-def fromJSON(dbname, schema_json):
+def fromJSON(schema_json, dbname = None):
     """
     Creates Database, Table, and Column objects as needed to satisfy the incoming schema.
     If the table is already present, assume we are updating: delete all columns and recreate from the schema.
     """
-    
+
     schema = json.loads(schema_json)
+
+    if dbname is None:
+        dbname = schema['databse']
+    
     try:
         db = Database.objects.get(name=dbname)
     except Database.DoesNotExist:
         db = Database(name=dbname)
         db.save()
 
-    for (tablename, columns) in schema.iteritems():
+    for (tablename, columns) in schema['tables'].iteritems():
         try:
             table = Table.objects.get(db=db, name=tablename)
             for column in Columns.objects.filter(table=table):
@@ -52,7 +56,11 @@ def fromJSON(dbname, schema_json):
 
         for columninfo in columns:
             column = Column(table=table, name=columninfo[0], type=columninfo[1])
-            column.save()
+            column.save() 
+
+    #TODO: Actually write SQL to db 
+    # and return error on failure
+    return None
 
 class Database(models.Model):
     name = models.CharField(max_length=200, unique=True)
