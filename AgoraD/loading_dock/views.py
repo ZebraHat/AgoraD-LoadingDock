@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.core import serializers
+import models
 from ModelGenerator import getModel
 
 def index(request):
@@ -17,4 +18,13 @@ def dblist(request, *args, **kwargs):
 
     return response
 
+def dbschema(request, *args, **kwargs):
+    response = HttpResponse()
+
+    response.write(models.toJSON(kwargs['database'], kwargs['table']))
+
+    return response
+
+def newschema(request):
+    pass
 
