@@ -40,4 +40,4 @@ def create_blocks():
                 end_row=num_rows - 1
             )
 
-        pass
+
