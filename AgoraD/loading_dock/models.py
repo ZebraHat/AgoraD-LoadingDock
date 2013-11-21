@@ -5,7 +5,7 @@ import json
 
 #### LOGGER DB ####
 
-def toJSON(dbname, tablename):
+def toJSON(dbname, tablenames, destdb = None):
     """
     Creates a JSON representation of a table schema. 
     Doesn't include the database name, because that's not guaranteed
@@ -13,11 +13,18 @@ def toJSON(dbname, tablename):
     """
 
     db = Database.objects.get(name=dbname)
-    table = Table.objects.get(db=db, name=tablename)
+    
+    schema = {'tables':{}}
 
-    schema = {tablename:[]}
-    for column in Column.objects.filter(table=table):
-        schema[tablename].append((column.name, column.type))
+    for tablename in tablenames:
+        table = Table.objects.get(db=db, name=tablename)
+        schema['tables'][tablename] = []
+
+        for column in Column.objects.filter(table=table):
+            schema[tablename].append((column.name, column.type))
+
+    if destdb:
+        schema['database'] = destdb
 
     return json.dumps(schema, sort_keys=True)
 
