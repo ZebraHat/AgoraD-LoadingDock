@@ -5,8 +5,8 @@ from loading_dock import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
-    url(r'^data/(?P<database>\w+)/(?P<table>\w+)/?$', views.dblist, name='dblist'),
-    url(r'^schema/(?P<database>\w+)/(?P<table>\w+)/?$', views.dbschema, name='dbschema'),
     url(r'^insert/?$', views.newschema, name='newschema'),
+    url(r'^(?P<database>\w+)/(?P<table>\w+)/data/?$', views.dblist, name='dblist'),
+    url(r'^(?P<database>\w+)/(?P<table>\w+)/schema/?$', views.dbschema, name='dbschema'),
 )
 
