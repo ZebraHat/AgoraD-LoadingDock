@@ -3,6 +3,8 @@ from django.core import serializers
 import models
 from ModelGenerator import getModel
 
+from ModelGenerator.data import newtable
+
 def index(request):
     return HttpResponse("hi")
 
@@ -26,5 +28,8 @@ def dbschema(request, *args, **kwargs):
     return response
 
 def newschema(request):
-    pass
+    json = r'[{"pk": 3, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "hello"}}, {"pk": 4, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "asdf"}}]'
+    
+    for obj in serializers.deserialize('json', json):
+        print obj
 
