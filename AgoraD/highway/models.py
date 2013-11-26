@@ -16,6 +16,7 @@ class Session(models.Model):
     #TODO Layout session
     # logger is default database
     session_id = models.CharField(max_length=256, help_text="Session ID from Marketplace")
+    current_block = models.ForeignKey('Block', null=True, blank=True, help_text="Current block database is on")
 
     class Meta:
         app_label = 'highway'
