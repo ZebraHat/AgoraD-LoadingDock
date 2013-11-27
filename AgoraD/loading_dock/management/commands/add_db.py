@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if len(args) == 0:
-            print 'Usage: python manage.py adddb <dbname ...>'
+            print 'Usage: python manage.py add_db <dbname ...>'
             print 'Possible dbnames: '
             for db in connections:
                 if db == 'default':
