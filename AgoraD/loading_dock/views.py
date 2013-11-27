@@ -2,8 +2,9 @@ from django.http import HttpResponse
 from django.core import serializers
 import models
 from ModelGenerator import getModel
+import JSONSerializer
 
-from ModelGenerator.data import newtable
+import ModelGenerator
 
 def index(request):
     return HttpResponse("hi")
@@ -16,7 +17,7 @@ def dblist(request, *args, **kwargs):
 
     response = HttpResponse()
 
-    serializers.serialize('json', t.objects.all(), stream=response)
+    response.write(JSONSerializer.serialize(t.objects.all()))
 
     return response
 
@@ -28,8 +29,19 @@ def dbschema(request, *args, **kwargs):
     return response
 
 def newschema(request):
-    json = r'[{"pk": 3, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "hello"}}, {"pk": 4, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "asdf"}}]'
+    print ModelGenerator
+    print ModelGenerator.data
+    print ModelGenerator.data.newtable
+
+    json = r'[{"fields": {"c2": "hello", "c1": 1}, "class": "newtable"}, {"fields": {"c2": "asdf", "c1": 5}, "class": "newtable"}]'
     
-    for obj in serializers.deserialize('json', json):
-        print obj
+    response = HttpResponse()
+    for obj in JSONSerializer.deserialize(json, 'data'):
+        response.write((obj.c1, obj.c2))
+  
+#    json = r'[{"pk": 3, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "hello"}}, {"pk": 4, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "asdf"}}]'
+    
+#    for obj in serializers.deserialize('json', json):
+#        print obj
+    return response
 

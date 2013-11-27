@@ -95,5 +95,6 @@ def getModel(dbname, tablename):
     db_models[tablename] = model
     modelCache[dbname] = db_models
 
+    models.register_models('loading_dock', model)
     return model
 
