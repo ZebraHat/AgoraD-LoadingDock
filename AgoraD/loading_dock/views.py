@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.core import serializers
 import models
 from ModelGenerator import getModel
-import JSONSerializer
+import JsonSerializer
 
 import ModelGenerator
 
@@ -17,7 +17,7 @@ def dblist(request, *args, **kwargs):
 
     response = HttpResponse()
 
-    response.write(JSONSerializer.serialize(t.objects.all()))
+    response.write(JsonSerializer.serialize(t.objects.all()))
 
     return response
 
@@ -36,7 +36,7 @@ def newschema(request):
     json = r'[{"fields": {"c2": "hello", "c1": 1}, "class": "newtable"}, {"fields": {"c2": "asdf", "c1": 5}, "class": "newtable"}]'
     
     response = HttpResponse()
-    for obj in JSONSerializer.deserialize(json, 'data'):
+    for obj in JsonSerializer.deserialize(json, 'data'):
         response.write((obj.c1, obj.c2))
   
 #    json = r'[{"pk": 3, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "hello"}}, {"pk": 4, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "asdf"}}]'
