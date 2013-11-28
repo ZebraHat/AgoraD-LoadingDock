@@ -21,7 +21,7 @@ class TestHighway(TestCase):
         data['table_names'] = []
         data['destination'] = 'localhost'
         data['session_id'] = random.randint(0, 9999999)
-        data['database_name'] = 'localdb'
+        data['database_name'] = 'test_sqlite'
 
         response = client.post(path='/highway/transfer/start/', data=data)
         
