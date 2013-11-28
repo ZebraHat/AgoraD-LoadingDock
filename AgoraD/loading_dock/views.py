@@ -6,10 +6,13 @@ import JsonSerializer
 
 import ModelGenerator
 
+
 def index(request):
     return HttpResponse("hi")
 
+
 def dblist(request, *args, **kwargs):
+
     t = getModel(kwargs['database'], kwargs['table'])
 
     #v = t(c1 = 5, c2 = "asdf")
@@ -21,12 +24,14 @@ def dblist(request, *args, **kwargs):
 
     return response
 
+
 def dbschema(request, *args, **kwargs):
     response = HttpResponse()
 
     response.write(models.toJSON(kwargs['database'], kwargs['table']))
 
     return response
+
 
 def newschema(request):
     print ModelGenerator

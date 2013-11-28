@@ -90,12 +90,16 @@ def transfer_block(request):
     :param block_id: ID of block being requested
     """
 
-
-
+    params = request.QUERY_PARAMS.dict()
     #TODO look up session
-    #TODO grab block in json format (need someone to calculate blocks)
-    #TODO return to sender
-    pass
+
+    try:
+        block = Block.objects.get(pk=params['block_id'])
+        block_data = json.loads(blocks.json_from_block(block))
+
+        return Response(data=block_data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])

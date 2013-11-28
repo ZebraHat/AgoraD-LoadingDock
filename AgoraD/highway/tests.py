@@ -14,3 +14,7 @@ from django.test.client import Client
 class TestHighway(TestCase):
     def test_transfer_start(self):
         client = Client()
+
+        client.get(
+
+        )
