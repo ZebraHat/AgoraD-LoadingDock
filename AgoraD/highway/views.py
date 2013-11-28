@@ -91,6 +91,7 @@ def transfer_block(request):
     """
 
 
+
     #TODO look up session
     #TODO grab block in json format (need someone to calculate blocks)
     #TODO return to sender
