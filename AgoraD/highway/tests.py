@@ -27,5 +27,19 @@ class TestHighway(TestCase):
         
         self.assertEqual(response.code, 200, msg='Transferring threw an error!')
 
+        #TODO run more tests
+
     def test_transfer_schema(self):
-        pass
+        client = Client()
+
+        data = dict()
+        data['token'] = None
+        data['table_names'] = []
+        data['session_id'] = random.randint(0, 9999)
+        data['database_name'] = 'qwertydb'
+
+        response = client.post(path='/highway/transfer/schema', data=data)
+
+        self.assertEqual(response.code, 200)
+
+        #TODO assert schema inserts into the database
