@@ -31,6 +31,31 @@ DATABASES = {
     }
 }
 
+#### TEST DATABASES ####
+DATABASES += {
+    'test_app_sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test_app.db',                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    },
+    'test_app_postgresql': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test_app',                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': 'testrole',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '5433',                      # Set to empty string for default.
+    },
+
+}
+
+##### END TEST DATABASES ####
+
 DATABASE_ROUTERS = ['loading_dock.GeneratedModelRouter.GeneratedModelRouter']
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
