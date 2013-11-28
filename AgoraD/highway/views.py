@@ -75,10 +75,22 @@ def transfer_start(request):
 
 @api_view(['POST'])
 def transfer_schema(request):
+    """
+    Use this to request only a schema. Must have an active session id.
+
+    :param session_id: ID of session from marketplace
+    :param database_name: Name of database to get schema from
+    :param table_names: An array of table names to pull schema for
+    """
     #TODO lookup session
-    #TODO grab schema in json format
-    #TODO return to sender
-    pass
+
+    params = request.QUERY_PARAMS.dict()
+
+    try:
+        data = toJSON(params['database_name'], params['table_names'])
+        return Response(data=data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])
