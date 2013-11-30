@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.core import serializers
+from django.db import connections
+from django.core.management.color import no_style as style
 import models
 from ModelGenerator import getModel
 import JsonSerializer
@@ -29,6 +31,15 @@ def dbschema(request, *args, **kwargs):
     response = HttpResponse()
 
     response.write(models.toJSON(kwargs['database'], kwargs['table']))
+
+    m = getModel(kwargs['database'], kwargs['table'])
+
+    creation = connections[kwargs['database']].creation
+
+    print creation
+
+    for sql in creation.sql_create_model(m, style)[0]:
+        response.write(sql)
 
     return response
 
