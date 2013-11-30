@@ -21,7 +21,7 @@ def toJSON(dbname, tablenames, destdb = None):
         schema['tables'][tablename] = []
 
         for column in Column.objects.filter(table=table):
-            schema[tablename].append((column.name, column.type))
+            schema['tables'][tablename].append((column.name, column.type))
 
     if destdb:
         schema['database'] = destdb
