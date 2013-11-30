@@ -30,7 +30,7 @@ def dblist(request, *args, **kwargs):
 def dbschema(request, *args, **kwargs):
     response = HttpResponse()
 
-    response.write(models.toJSON(kwargs['database'], kwargs['table']))
+    response.write(models.toJSON(kwargs['database'], [kwargs['table']]))
 
     m = getModel(kwargs['database'], kwargs['table'])
 
@@ -38,7 +38,8 @@ def dbschema(request, *args, **kwargs):
 
     print creation
 
-    for sql in creation.sql_create_model(m, style)[0]:
+    response.write(' <br><br> ')
+    for sql in creation.sql_create_model(m, style())[0]:
         response.write(sql)
 
     return response

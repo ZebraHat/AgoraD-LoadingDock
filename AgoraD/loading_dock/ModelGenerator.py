@@ -84,7 +84,7 @@ def getModel(dbname, tablename):
 
     class Meta:
         db_table = tablename
-        managed = False
+#        managed = False
 
     d['Meta'] = Meta
 
