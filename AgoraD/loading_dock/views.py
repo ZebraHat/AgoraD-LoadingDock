@@ -1,13 +1,8 @@
 from django.http import HttpResponse
 from django.core import serializers
-from django.db import connections
-from django.core.management.color import no_style as style
+from ModelGenerator import getModel, getSQL
 import models
-from ModelGenerator import getModel
 import JsonSerializer
-
-import ModelGenerator
-
 
 def index(request):
     return HttpResponse("hi")
@@ -30,31 +25,32 @@ def dblist(request, *args, **kwargs):
 def dbschema(request, *args, **kwargs):
     response = HttpResponse()
 
-    response.write(models.toJSON(kwargs['database'], [kwargs['table']]))
+    response.write(JsonSerializer.schema2json(kwargs['database'], [kwargs['table']]))
 
     m = getModel(kwargs['database'], kwargs['table'])
 
-    creation = connections[kwargs['database']].creation
-
-    print creation
-
     response.write(' <br><br> ')
-    for sql in creation.sql_create_model(m, style())[0]:
+    for sql in getSQL(m):
         response.write(sql)
 
     return response
 
-
 def newschema(request):
-    print ModelGenerator
-    print ModelGenerator.data
-    print ModelGenerator.data.newtable
+    json = '{"database": "data", "tables": {"itworks": [["a1", "(\'IntegerField\', {\'primary_key\': True})"], ["a2", "(\'TextField\', {})"]]}}'
 
-    json = r'[{"fields": {"c2": "hello", "c1": 1}, "class": "newtable"}, {"fields": {"c2": "asdf", "c1": 5}, "class": "newtable"}]'
+    JsonSerializer.json2schema(json)
+    response = HttpResponse()
+    response.write("asf")  
+    return response
+
+def newdata(request):
+    #json = r'[{"fields": {"c2": "hello", "c1": 1}, "class": "newtable"}, {"fields": {"c2": "asdf", "c1": 5}, "class": "newtable"}]'
+    json = r'[{"fields": {"a2": "hello", "a1": 1}, "class": "itworks"}, {"fields": {"a2": "asdf", "a1": 5}, "class": "itworks"}]'
     
     response = HttpResponse()
     for obj in JsonSerializer.deserialize(json, 'data'):
-        response.write((obj.c1, obj.c2))
+        response.write((obj.a1, obj.a2))
+        obj.save()
   
 #    json = r'[{"pk": 3, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "hello"}}, {"pk": 4, "model": "loading_dock.ModelGenerator.data.newtable", "fields": {"c2": "asdf"}}]'
     

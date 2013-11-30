@@ -1,6 +1,8 @@
 import types
 import sys
 from models import Database, Table, Column
+from django.db import connections
+from django.core.management.color import no_style as style
 from django.db import models
 
 # Cache for generated models
@@ -57,6 +59,10 @@ dont_erase_me_bro = sys.modules[__name__]
 # Replace current module with database generator module
 sys.modules[__name__] = ModuleGenerator(__name__)
 
+def getSQL(model):
+    creation = connections[model.__database__].creation
+    return creation.sql_create_model(model, style())[0]
+
 # Create a django model for the specified databse and table
 # based on information from database introspection
 def getModel(dbname, tablename):
@@ -96,4 +102,5 @@ def getModel(dbname, tablename):
     modelCache[dbname] = db_models
 
     return model
+
 
