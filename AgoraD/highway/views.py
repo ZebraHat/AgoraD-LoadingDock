@@ -15,7 +15,7 @@ import json
 @api_view(['POST'])
 def transfer_start(request):
     """
-    Starts a transfer to another AgoraD loading dock
+    Starts a transfer to another AgoraD loading dock, parameters are url encoded
 
     :param token: API token for this loading dock
     :param table_names: A list of table names to transfer

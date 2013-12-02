@@ -43,3 +43,9 @@ class TestHighway(TestCase):
         self.assertEqual(response.code, 200)
 
         #TODO assert schema inserts into the database
+
+    def test_intercept_schema(self):
+        pass
+
+    def test_intercept_block(self):
+        pass
