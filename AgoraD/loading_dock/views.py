@@ -3,12 +3,13 @@ from django.core import serializers
 from ModelGenerator import getModel, getSQL
 import models
 import JsonSerializer
+import json
 
 def index(request):
     return HttpResponse("hi")
 
 
-def dblist(request, *args, **kwargs):
+def dbdata(request, *args, **kwargs):
 
     t = getModel(kwargs['database'], kwargs['table'])
 
@@ -27,12 +28,19 @@ def dbschema(request, *args, **kwargs):
 
     response.write(JsonSerializer.schema2json(kwargs['database'], [kwargs['table']]))
 
-    m = getModel(kwargs['database'], kwargs['table'])
+    return response
 
-    response.write(' <br><br> ')
-    for sql in getSQL(m):
-        response.write(sql)
+def listdbs(request):
 
+    schema = {}
+
+    for db in models.Database.objects.all():
+        schema[db.name] = json.loads(JsonSerializer.schema2json(db.name, [t.name for t in models.Table.objects.filter(db=db)]))
+
+    response = HttpResponse()
+
+    response.write(json.dumps(schema)
+    
     return response
 
 def newschema(request):
