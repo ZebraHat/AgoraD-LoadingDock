@@ -39,7 +39,7 @@ def listdbs(request):
 
     response = HttpResponse()
 
-    response.write(json.dumps(schema)
+    response.write(json.dumps(schema))
     
     return response
 
