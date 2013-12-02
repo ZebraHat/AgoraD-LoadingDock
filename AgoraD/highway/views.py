@@ -7,7 +7,7 @@ from rest_framework import status
 import urllib2
 
 from models import Block, Session
-from loading_dock.models import toJSON, fromJSON
+from loading_dock.JsonSerializer import schema2json, json2schema
 from modules import blocks
 import json
 
@@ -46,7 +46,7 @@ def transfer_start(request):
     #### SEND THE SCHEMA ####
 
     url = params['destination'] + '/highway/intercept/schema/'
-    data = toJSON(params['database_name'], params['table_names'])
+    data = schema2json(params['database_name'], params['table_names'])
     response = urllib2.urlopen(url, data)
     if response.get_code() != status.HTTP_200_OK:
         return Response(status=response.get_code())
@@ -87,7 +87,7 @@ def transfer_schema(request):
     params = request.QUERY_PARAMS.dict()
 
     try:
-        data = toJSON(params['database_name'], params['table_names'])
+        data = schema2json(params['database_name'], params['table_names'])
         return Response(data=data, status=status.HTTP_200_OK)
     except:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -122,7 +122,7 @@ def intercept_schema(request):
     :param schema: JSON schema from the database
     """
     params = request.QUERY_PARAMS.dict()
-    error = fromJSON(params['schema'])
+    error = json2schema(params['schema'])
 
     if error:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
