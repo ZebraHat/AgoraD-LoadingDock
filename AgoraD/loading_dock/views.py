@@ -34,12 +34,9 @@ def listdbs(request):
 
     schema = {}
 
-    for db in models.Database.objects.all():
-        schema[db.name] = json.loads(JsonSerializer.schema2json(db.name, [t.name for t in models.Table.objects.filter(db=db)]))
-
     response = HttpResponse()
 
-    response.write(json.dumps(schema))
+    response.write(JsonSerializer.schema2json())
 
     return response
 

@@ -29,30 +29,44 @@ def deserialize(json_str, destdb):
 
     return objs
 
-def schema2json(dbname, tablenames, destdb = None):
+def schema2json(dbname = None, tablenames = None, destdb = None):
     """
-    Creates a JSON representation of a table schema. 
+    If no parameters are passed, creates a schema representation of
+    all known databases and tables.
+    If dbname is passed,
+    creates a JSON representation of a table schema.
     Doesn't include the database name, because that's not guaranteed
     to be the same on the destination server anyway.
     """
+    if dbname:
+        db = Database.objects.get(name=dbname)
 
-    db = Database.objects.get(name=dbname)
+        schema = {'tables':{}}
+
+        for tablename in tablenames:
+            table = Table.objects.get(db=db, name=tablename)
+            schema['tables'][tablename] = []
+
+            for column in Column.objects.filter(table=table):
+                schema['tables'][tablename].append((column.name, column.type))
+
+        if destdb:
+            schema['database'] = destdb
+        else:
+            schema['database'] = dbname
+
+        return json.dumps(schema, sort_keys=True)
     
-    schema = {'tables':{}}
-
-    for tablename in tablenames:
-        table = Table.objects.get(db=db, name=tablename)
-        schema['tables'][tablename] = []
-
-        for column in Column.objects.filter(table=table):
-            schema['tables'][tablename].append((column.name, column.type))
-
-    if destdb:
-        schema['database'] = destdb
     else:
-        schema['database'] = dbname
+        schema = {}
+        for db in Database.objects.all():
+            schema[db.name] = {}
+            for table in Table.objects.filter(db=db):
+                schema[db.name][table.name] = {}
+                for column in Column.objects.filter(table=table):
+                    schema[db.name][table.name][column.name] = column.type
 
-    return json.dumps(schema, sort_keys=True)
+        return json.dumps(schema, sort_keys=True)
 
 def json2schema(schema_json, commit = True, dbname = None):
     """
@@ -65,7 +79,7 @@ def json2schema(schema_json, commit = True, dbname = None):
 
     if dbname is None:
         dbname = schema['database']
-    
+
     try:
         db = Database.objects.get(name=dbname)
     except Database.DoesNotExist:
@@ -83,13 +97,13 @@ def json2schema(schema_json, commit = True, dbname = None):
 
         for columninfo in columns:
             column = Column(table=table, name=columninfo[0], type=columninfo[1])
-            column.save() 
+            column.save()
 
         if commit:
             model = ModelGenerator.getModel(dbname, tablename)
             cursor = connections[dbname].cursor()
             for sql in ModelGenerator.getSQL(model):
                 cursor.execute(sql)
-            
+
     return None
 
