@@ -77,6 +77,9 @@ def adddata(request):
 
 @api_view(['POST'])
 def addschema(request):
-    data = None
-    return Response(data=data, status=status.HTTP_200_OK)
+
+    for obj in JsonSerializer.deserialize(request.QUERY_PARAMS.dict(), 'students'):
+        obj.save()
+
+    return Response(data=request.QUERY_PARAMS.dict(), status=status.HTTP_200_OK)
 
