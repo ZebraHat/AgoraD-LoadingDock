@@ -2,6 +2,7 @@ from django.db import connections
 from models import Database, Table, Column
 import json
 import ModelGenerator
+from django.core.serializers.json import DjangoJSONEncoder
 
 def serialize(objects):
     json_objs = []
@@ -14,10 +15,10 @@ def serialize(objects):
 
         json_objs.append(obj)
 
-    return json.dumps(json_objs)
+    return json.dumps(json_objs, cls=DjangoJSONEncoder)
 
 def deserialize(json_str, destdb):
-    json_objs = json.loads(json_str)
+    json_objs = json.loads(json_str, cls=DjangoJSONEncoder)
     objs = []
 
     for obj in json_objs:
