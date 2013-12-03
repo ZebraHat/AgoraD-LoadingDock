@@ -34,41 +34,37 @@ def schema2json(dbname = None, tablenames = None, destdb = None):
     If no parameters are passed, creates a schema representation of
     all known databases and tables.
     If dbname is passed,
-    creates a JSON representation of a table schema.
-    Doesn't include the database name, because that's not guaranteed
-    to be the same on the destination server anyway.
+    creates a JSON representation of a table schema,
+    using destdb as the database name if it is specified.
     """
+
     if dbname:
-        db = Database.objects.get(name=dbname)
+        dblist = [Database.objects.get(name=dbname)]
+    else:
+        dblist = Database.objects.all()
 
-        schema = {'tables':{}}
+    schema = {}
+    for db in dblist:
+        if tablenames:
+            tablelist = Table.objects.filter(db=db, name__in=tablenames)
+        else:
+            tablelist = Table.objects.filter(db=db)
 
-        for tablename in tablenames:
-            table = Table.objects.get(db=db, name=tablename)
-            schema['tables'][tablename] = []
+        table_schema = {}
+        for table in tablelist:
+            table_schema[table.name] = {}
 
             for column in Column.objects.filter(table=table):
-                schema['tables'][tablename].append((column.name, column.type))
+                table_schema[table.name][column.name] = column.type
 
         if destdb:
-            schema['database'] = destdb
+            schema[destdb] = table_schema
         else:
-            schema['database'] = dbname
+            schema[db.name] = table_schema
 
-        return json.dumps(schema, sort_keys=True)
-    
-    else:
-        schema = {}
-        for db in Database.objects.all():
-            schema[db.name] = {}
-            for table in Table.objects.filter(db=db):
-                schema[db.name][table.name] = {}
-                for column in Column.objects.filter(table=table):
-                    schema[db.name][table.name][column.name] = column.type
+    return json.dumps(schema, sort_keys=True)
 
-        return json.dumps(schema, sort_keys=True)
-
-def json2schema(schema_json, commit = True, dbname = None):
+def json2schema(schema_json, commit = True, destdb = None):
     """
     Creates Database, Table, and Column objects as needed to satisfy the incoming schema.
     If the table is already present, assume we are updating: delete all columns and recreate from the schema.
@@ -77,33 +73,33 @@ def json2schema(schema_json, commit = True, dbname = None):
 
     schema = json.loads(schema_json)
 
-    if dbname is None:
-        dbname = schema['database']
+    for dbname, table_schema in schema.iteritems():
+        if destdb:
+            dbname = destdb
 
-    try:
-        db = Database.objects.get(name=dbname)
-    except Database.DoesNotExist:
-        db = Database(name=dbname)
-        db.save()
-
-    for (tablename, columns) in schema['tables'].iteritems():
         try:
-            table = Table.objects.get(db=db, name=tablename)
-            for column in Column.objects.filter(table=table):
-                column.delete()
-        except Table.DoesNotExist:
-            table = Table(db=db, name=tablename)
-            table.save()
+            db = Database.objects.get(name=dbname)
+        except Database.DoesNotExist:
+            db = Database(name=dbname)
+            db.save()
 
-        for columninfo in columns:
-            column = Column(table=table, name=columninfo[0], type=columninfo[1])
-            column.save()
+        for tablename, column_schema in table_schema.iteritems():
+            try:
+                table = Table.objects.get(db=db, name=tablename)
+                for column in Column.objects.filter(table=table):
+                    column.delete()
+            except Table.DoesNotExist:
+                table = Table(db=db, name=tablename)
+                table.save()
 
-        if commit:
-            model = ModelGenerator.getModel(dbname, tablename)
-            cursor = connections[dbname].cursor()
-            for sql in ModelGenerator.getSQL(model):
-                cursor.execute(sql)
+            for columnname, columntype in column_schema.iteritems():
+                column = Column(table=table, name=columnname, type=columntype)
+                column.save()
 
+            if commit:
+                model = ModelGenerator.getModel(dbname, tablename)
+                cursor = connections[dbname].cursor()
+                for sql in ModelGenerator.getSQL(model):
+                    cursor.execute(sql)
     return None
 

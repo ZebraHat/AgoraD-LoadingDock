@@ -41,7 +41,7 @@ def listdbs(request):
     return response
 
 def newschema(request):
-    json = '{"database": "data", "tables": {"itworks": [["a1", "(\'IntegerField\', {\'primary_key\': True})"], ["a2", "(\'TextField\', {})"]]}}'
+    json = '{"data": {"itworks": {"a1": "(\'IntegerField\', {\'primary_key\': True})", "a2": "(\'TextField\', {})"}}}'
 
     JsonSerializer.json2schema(json)
     response = HttpResponse()
