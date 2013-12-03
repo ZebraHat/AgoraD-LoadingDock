@@ -77,7 +77,6 @@ def adddata(request):
 
 @api_view(['POST'])
 def addschema(request):
-    response = HttpResponse()
-    response.write (str(request.QUERY_PARAMS.dict()))
-    return response
+    data = None
+    return Response(data=data, status=status.HTTP_200_OK)
 
