@@ -18,7 +18,7 @@ def serialize(objects):
     return json.dumps(json_objs, cls=DjangoJSONEncoder)
 
 def deserialize(json_str, destdb):
-    json_objs = json.loads(json_str, cls=DjangoJSONEncoder)
+    json_objs = json.loads(json_str)
     objs = []
 
     for obj in json_objs:
