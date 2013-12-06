@@ -1,7 +1,5 @@
 # Django settings for AgoraD project.
 
-TEST_RUNNER = 'AgoraD.test_runner.LoadFixturesRunner'
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -31,25 +29,10 @@ DATABASES = {
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     },
-    'test_app_postgresql': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'qwertydb',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'testrole',
-        'PASSWORD': 'password',
-        'HOST': '54.242.46.67',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '5433',                      # Set to empty string for default.
-    },
-    'test_app_sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test_sqlite.db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',
-    }
+
+    #### CONFIGURE YOUR DATABASE(S) HERE ####
+
+    #########################################
 }
 
 ##### END TEST DATABASES ####

@@ -21,31 +21,27 @@ def create_blocks(database_name):
 
     #TODO call this whenever the db changes
 
-    try:
+    block_size = 1000
 
-        block_size = 1000
-
-        database = Database.objects.filter(name=database_name)[0]
-        tables = Table.objects.filter(db=database)
-        for table in tables:
-            num_rows = table.objects.count()
-            for x in range(0, num_rows, block_size):
-                Block.objects.create(
-                    database=database,
-                    table=table,
-                    start_row=x,
-                    end_row=x + block_size - 1
-                )
-            ## do the last few blocks
-            if num_rows % block_size:
-                Block.objects.create(
-                    database=database,
-                    table=table,
-                    start_row=num_rows - num_rows % block_size,
-                    end_row=num_rows - 1
-                )
-    except:
-        return 1
+    database = Database.objects.filter(name=database_name)[0]
+    tables = Table.objects.filter(db=database)
+    for table in tables:
+        num_rows = table.objects.count()
+        for x in range(0, num_rows, block_size):
+            Block.objects.create(
+                database=database,
+                table=table,
+                start_row=x,
+                end_row=x + block_size - 1
+            )
+        ## do the last few blocks
+        if num_rows % block_size:
+            Block.objects.create(
+                database=database,
+                table=table,
+                start_row=num_rows - num_rows % block_size,
+                end_row=num_rows - 1
+            )
 
 
 def json_from_block(block):

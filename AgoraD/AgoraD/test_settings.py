@@ -1,6 +1,6 @@
 # Django settings for AgoraD project.
 
-TEST_RUNNER = 'AgoraD.test_runner.LoadFixturesRunner'
+#TEST_RUNNER = 'AgoraD.test_runner.LoadFixturesRunner'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -165,6 +165,8 @@ INSTALLED_APPS = (
     ## Internal ##
     'loading_dock',
     'highway',
+    ## Test App ##
+    'test_app',
 
     ## django rest framework ##
     'rest_framework'

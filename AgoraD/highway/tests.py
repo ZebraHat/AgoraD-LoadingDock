@@ -11,6 +11,8 @@ from django.test import TestCase
 from django.test.client import Client
 import random
 from modules.blocks import *
+from autofixture import AutoFixture
+from test_app.models import Food, Food_Type, Student
 
 
 class TestTransfer(TestCase):
@@ -54,4 +56,10 @@ class TestTransfer(TestCase):
 
 class TestBlockCreation(TestCase):
     def test_block_creation(self):
-        pass
+        ## load auto fixtures ##
+        food_fixture = AutoFixture(Food, generate_fk=True)
+        student_fixture = AutoFixture(Student, generate_fk=True)
+
+        blocks = create_blocks('test_app_postgresql')
+
+        print len(blocks)
