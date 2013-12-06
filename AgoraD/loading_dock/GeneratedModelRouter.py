@@ -26,6 +26,8 @@ class GeneratedModelRouter(object):
         return None
 
     def allow_syncdb(self, db, model):
-        return db == getattr(model, '__database__', None)
-
+        try:
+            return db == model.__database__
+        except AttributeError:
+            return None
 
