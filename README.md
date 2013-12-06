@@ -1,6 +1,25 @@
 AgoraD-LoadingDock
 ==================
-A django project that will sit on top of a datastore. The datastore will likely be that of another large player in the mobile data space in the future. Initially it will be used internally with our own datastore. There is no need to envision this partnership at the conception of the datastore, and as such integration will be an easy process.
+
+The AgoraD Loading Dock is a small django project that sits on top of a datastore to facilitate datastore-agnostic data sharing. The accompanying software (AgoraD-MarketplaceUI), will communicate with this django project and facilitate transfers of data whenever and wherever you elect to transfer your data to.
+
+This project has two main components:
+* Loading Dock
+* Highway
+
+The Loading Dock
+----------------
+
+The Loading Dock is a magic bit of code that will autodiscover your database's schema and other introspection properties automatically. Please see the setup and wiki for instructions on how to use it.
+
+The Highway
+-----------
+
+The Highway is a fancy term for an API, and it will facilitate the secure transfer of your data in manageable blocks to the destination's datastore. There should never be a need for a user to communicate with this directly.
+
+--------------
+
+Again, there is no need to call any of the functionality of the Loading Dock after the initial setup, as all record keeping and transfers are initiated by the Marketplace UI(s) that you are registered with.
 
 Setup
 -----
@@ -8,4 +27,4 @@ The user will configure their datastore by appending to the DATABASES in setting
 
 Current State
 -------------
-The repository at this point is a mostly empty, but complete django project. It does contain a short README and clearly labeled structure. Technical content included is a models file for the datastores and a python script for adding datastores to the project.
+The Loading Dock's packaging and introspection tools are mostly complete, but the Highway has not yet been fully tested or connected to the Marketplace's UI. Feature requests, a better wiki, and support tickets are coming soon.
