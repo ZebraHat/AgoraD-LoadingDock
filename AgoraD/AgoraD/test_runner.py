@@ -16,7 +16,8 @@ class LoadFixturesRunner(DjangoTestSuiteRunner):
         old_config = self.setup_databases()
 
         print 'Running script'
-        call_command('add_db', 'CHASE-PUT-THE-NAME-OF-THE-DATABASE-HERE')
+        call_command('add_db', 'test_app_postgresql')
+        call_command('add_db', 'test_app_sqlite')
 
         c = Command()
         c.handle('test_app_postgresql')
