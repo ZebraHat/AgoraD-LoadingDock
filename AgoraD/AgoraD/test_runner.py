@@ -5,7 +5,7 @@
 
 from django.test.simple import DjangoTestSuiteRunner
 from loading_dock.management.commands.add_db import Command
-
+from django.core.management import call_command
 
 class LoadFixturesRunner(DjangoTestSuiteRunner):
     """ A test runner to test without database creation """
@@ -16,7 +16,7 @@ class LoadFixturesRunner(DjangoTestSuiteRunner):
         old_config = self.setup_databases()
 
         print 'Running script'
-        ### Run the add db command ###
+        call_command('add_db', 'CHASE-PUT-THE-NAME-OF-THE-DATABASE-HERE')
 
         c = Command()
         c.handle('test_app_postgresql')
