@@ -10,9 +10,10 @@ __author__ = 'chase'
 from django.test import TestCase
 from django.test.client import Client
 import random
+from modules.blocks import *
 
 
-class TestHighway(TestCase):
+class TestTransfer(TestCase):
     def test_transfer_start(self):
         client = Client()
 
@@ -48,4 +49,9 @@ class TestHighway(TestCase):
         pass
 
     def test_intercept_block(self):
+        pass
+
+
+class TestBlockCreation(TestCase):
+    def test_block_creation(self):
         pass
