@@ -1,3 +1,8 @@
+#
+## views.py
+## Functionality behind the loading dock urls
+#
+
 from django.http import HttpResponse
 from django.core import serializers
 from ModelGenerator import getModel, getSQL

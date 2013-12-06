@@ -1,3 +1,8 @@
+#
+## views.py
+## API views and core functionality for the highway
+#
+
 __author__ = 'chase'
 
 

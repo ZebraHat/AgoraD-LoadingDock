@@ -1,3 +1,9 @@
+#
+## ModelGenerator.py
+## Models for auto-generating django models from a database
+#
+
+
 import types
 import sys
 from models import Database, Table, Column

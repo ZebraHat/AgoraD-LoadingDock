@@ -1,3 +1,9 @@
+#
+## JsonSerializer.py
+## functions for serializing and deserializing schemas
+#
+
+
 from django.db import connections
 from models import Database, Table, Column
 import json

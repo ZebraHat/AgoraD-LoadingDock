@@ -1,11 +1,12 @@
 #
 ## test_runner.py
-## custom test runner that bypasses the creation of a database on this side
+## custom test runner that runs the introspection stuff on the auto-generated databases
 #
 
 from django.test.simple import DjangoTestSuiteRunner
 from loading_dock.management.commands.add_db import Command
 from django.core.management import call_command
+
 
 class LoadFixturesRunner(DjangoTestSuiteRunner):
     """ A test runner to test without database creation """
@@ -16,12 +17,13 @@ class LoadFixturesRunner(DjangoTestSuiteRunner):
         old_config = self.setup_databases()
 
         print 'Running script'
+        print call_command('add_db')
         call_command('add_db', 'test_app_postgresql')
         call_command('add_db', 'test_app_sqlite')
 
         c = Command()
-        c.handle('test_app_postgresql')
-        c.handle('test_app_sqlite')
+        c.handle('test_postgres')
+        c.handle('test_sqlite')
 
         ###                        ###
 

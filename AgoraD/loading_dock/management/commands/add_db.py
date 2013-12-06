@@ -1,3 +1,9 @@
+#
+## add_db.py
+## manage.py commands for adding a db to the auto generated models
+#
+
+
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.db import connections, IntegrityError

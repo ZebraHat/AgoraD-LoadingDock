@@ -1,3 +1,8 @@
+#
+## models.py
+## Models for storing information about the databases that have been introspected
+#
+
 from django.db import models
 
 #TODO: less arbitrary name length

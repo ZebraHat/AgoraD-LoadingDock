@@ -1,4 +1,7 @@
-# Django settings for AgoraD project.
+#
+## test_settings.py
+## TEST Django settings for AgoraD project.
+#
 
 TEST_RUNNER = 'AgoraD.test_runner.LoadFixturesRunner'
 

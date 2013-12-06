@@ -1,6 +1,6 @@
 #
 ## models.py
-## Logs session information
+## Logs session information and blocks generated
 #
 
 __author__ = 'chase'

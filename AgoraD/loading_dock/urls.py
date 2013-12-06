@@ -1,3 +1,8 @@
+#
+## urls.py
+## URLs specific to the loading_dock
+#
+
 from django.conf.urls import patterns, url
 
 from loading_dock import views

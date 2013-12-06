@@ -1,3 +1,8 @@
+#
+## urls.py
+## Main urls for routing to apps contained in this project
+#
+
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
