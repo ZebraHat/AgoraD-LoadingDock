@@ -4,7 +4,6 @@
 #
 
 from django.test.simple import DjangoTestSuiteRunner
-from loading_dock.management.commands.add_db import Command
 from django.core.management import call_command
 
 
@@ -20,10 +19,6 @@ class LoadFixturesRunner(DjangoTestSuiteRunner):
         print call_command('add_db')
         call_command('add_db', 'test_app_postgresql')
         call_command('add_db', 'test_app_sqlite')
-
-        c = Command()
-        c.handle('test_postgres')
-        c.handle('test_sqlite')
 
         ###                        ###
 

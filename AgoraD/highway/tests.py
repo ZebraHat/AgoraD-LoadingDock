@@ -61,5 +61,4 @@ class TestBlockCreation(TestCase):
         student_fixture = AutoFixture(Student, generate_fk=True)
 
         blocks = create_blocks('test_app_postgresql')
-
         print len(blocks)
