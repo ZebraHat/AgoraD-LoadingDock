@@ -98,7 +98,9 @@ def _type_reverser(introspector, cursor, table):
     # for some reason, get_primary_key_column does not work,
     # but this code which does the exact same thing does.
     primary_key = None
+    print introspector.get_primary_key_column(cursor, table)
     for column in six.iteritems(introspector.get_indexes(cursor, table)):
+        print column
         if column[1]['primary_key']:
             primary_key = column[0]
 
