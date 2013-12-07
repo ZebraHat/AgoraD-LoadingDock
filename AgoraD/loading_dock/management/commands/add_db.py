@@ -95,16 +95,7 @@ def _add_column(table, columninfo, type_reverser):
     return column
 
 def _type_reverser(introspector, cursor, table):
-    # for some reason, get_primary_key_column does not work,
-    # but this code which does the exact same thing does.
-#    primary_key = None
-#    for column in six.iteritems(introspector.get_indexes(cursor, table)):
-#        print column
-#        if column[1]['primary_key']:
-#            primary_key = column[0]
     primary_key = introspector.get_primary_key_column(cursor, table)
-#    print introspector.get_primary_key_column(cursor, table)
-    print primary_key
     def reverse(t):
         rt = introspector.get_field_type(t[1], t)
         if type(rt) is not tuple:
