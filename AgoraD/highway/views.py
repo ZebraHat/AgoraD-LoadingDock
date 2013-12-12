@@ -33,8 +33,7 @@ def transfer_start(request):
     if request.method != 'POST':
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    params = request.QUERY_PARAMS.dict()
-
+    params = request.POST.dict()
     #### CALCULATE BLOCKS ####
 
     error = blocks.create_blocks(params['database_name'])
