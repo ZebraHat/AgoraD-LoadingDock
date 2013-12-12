@@ -26,7 +26,7 @@ def create_blocks(database_name):
     database = Database.objects.filter(name=database_name)[0]
     tables = Table.objects.filter(db=database)
     for table in tables:
-        num_rows = table.objects.count()
+        num_rows = ModelGenerator.getModel(database.name, table.name).objects.count()
         for x in range(0, num_rows, block_size):
             Block.objects.create(
                 database=database,
